@@ -1,0 +1,18 @@
+[package]
+name = "term-note"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+ratatui = "0.24"
+crossterm = "0.27"
+rusqlite = { version = "0.30", features = ["bundled"] }
+anyhow = "1.0"
+chrono = "0.4"
+directories = "5.0"
+uuid = { version = "1.6", features = ["v4"] }
+unicode-width = "0.1"
+pulldown-cmark = "0.9"
+
+[profile.release]
+opt-level = 3
