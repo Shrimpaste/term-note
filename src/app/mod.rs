@@ -263,15 +263,8 @@ impl App {
                     }
                 }
             }
-            KeyCode::Char(c) => {
-                self.state.search_query.push(c);
-                self.perform_search();
-            }
-            KeyCode::Backspace => {
-                self.state.search_query.pop();
-                self.perform_search();
-            }
-            KeyCode::Down | KeyCode::Char('j') => {
+            // 先匹配特定的 Char('j') 和 Char('k')
+            KeyCode::Char('j') => {
                 if !self.state.search_results.is_empty() {
                     let new_idx = match self.state.search_selected {
                         Some(i) => (i + 1).min(self.state.search_results.len() - 1),
@@ -280,7 +273,7 @@ impl App {
                     self.state.search_selected = Some(new_idx);
                 }
             }
-            KeyCode::Up | KeyCode::Char('k') => {
+            KeyCode::Char('k') => {
                 if !self.state.search_results.is_empty() {
                     let new_idx = match self.state.search_selected {
                         Some(i) => i.saturating_sub(1),
@@ -288,6 +281,32 @@ impl App {
                     };
                     self.state.search_selected = Some(new_idx);
                 }
+            }
+            KeyCode::Down => {
+                if !self.state.search_results.is_empty() {
+                    let new_idx = match self.state.search_selected {
+                        Some(i) => (i + 1).min(self.state.search_results.len() - 1),
+                        None => 0,
+                    };
+                    self.state.search_selected = Some(new_idx);
+                }
+            }
+            KeyCode::Up => {
+                if !self.state.search_results.is_empty() {
+                    let new_idx = match self.state.search_selected {
+                        Some(i) => i.saturating_sub(1),
+                        None => 0,
+                    };
+                    self.state.search_selected = Some(new_idx);
+                }
+            }
+            KeyCode::Char(c) => {
+                self.state.search_query.push(c);
+                self.perform_search();
+            }
+            KeyCode::Backspace => {
+                self.state.search_query.pop();
+                self.perform_search();
             }
             _ => {}
         }

@@ -1,26 +1,26 @@
 use ratatui::style::{Color, Modifier, Style};
 
-/// UI 主题配置 - 精致墨绿主题
-/// 配色：深墨绿 + 薄荷绿 + 暖白
+/// UI 主题配置 - 终端黑客风格
+/// 配色：纯黑背景 + 荧光绿 + 青色高亮
 #[derive(Debug, Clone)]
 pub struct Theme {
-    /// 主背景色（最深墨绿）
+    /// 主背景色（纯黑终端）
     pub bg: Color,
     /// 次背景色（卡片背景）
     pub bg_secondary: Color,
     /// 三级背景（输入框背景）
     pub bg_tertiary: Color,
-    /// 前景色（暖白）
+    /// 前景色（荧光绿）
     pub fg: Color,
-    /// 前景色次要
+    /// 前景色次要（暗绿）
     pub fg_secondary: Color,
-    /// 边框色（暗淡）
+    /// 边框色（暗绿）
     pub border: Color,
-    /// 边框激活（明亮薄荷绿）
+    /// 边框激活（青色）
     pub border_active: Color,
-    /// 主强调色（亮薄荷绿）
+    /// 主强调色（荧光绿）
     pub accent: Color,
-    /// 强调色次要
+    /// 强调色次要（暗绿）
     pub accent_dim: Color,
     /// 强调色暗淡
     pub accent_subtle: Color,
@@ -36,52 +36,67 @@ pub struct Theme {
     pub preview: Color,
     /// 日期颜色
     pub date: Color,
-    /// 错误色
+    /// 错误色（红）
     pub error: Color,
-    /// 警告色
+    /// 警告色（黄）
     pub warning: Color,
-    /// 成功色
+    /// 成功色（青）
     pub success: Color,
-    /// 阴影色（更深）
+    /// 阴影色
     pub shadow: Color,
     /// 渐变起始
     pub gradient_start: Color,
     /// 渐变结束
     pub gradient_end: Color,
+    /// 提示符颜色（青）
+    pub prompt: Color,
+    /// 路径颜色（绿）
+    pub path: Color,
+    /// 命令颜色（紫）
+    pub command: Color,
+    /// 用户信息颜色（红）
+    pub user: Color,
+    /// 分类颜色（橙）
+    pub category: Color,
 }
 
 impl Default for Theme {
     fn default() -> Self {
-        Self::dark()
+        Self::terminal()
     }
 }
 
 impl Theme {
-    /// 深色主题（精致墨绿）
-    pub fn dark() -> Self {
+    /// 终端黑客风格主题
+    pub fn terminal() -> Self {
         Self {
-            bg: Color::Rgb(6, 10, 8),              // #060a08 最深背景
-            bg_secondary: Color::Rgb(14, 22, 18),  // #0e1612 卡片
-            bg_tertiary: Color::Rgb(22, 34, 28),   // #16221c 输入框
-            fg: Color::Rgb(245, 243, 240),         // #f5f3f0 暖白
-            fg_secondary: Color::Rgb(170, 165, 160), // #aaa5a0 灰白
-            border: Color::Rgb(40, 55, 48),        // #283730 深绿边框
-            border_active: Color::Rgb(90, 210, 160), // #5ad2a0 薄荷绿
-            accent: Color::Rgb(110, 230, 180),     // #6ee6b4 亮薄荷
-            accent_dim: Color::Rgb(70, 160, 125),  // #46a07d 中薄荷
-            accent_subtle: Color::Rgb(45, 100, 80), // #2d6450 暗薄荷
-            highlight_bg: Color::Rgb(28, 48, 40),  // #1c3028 选中背景
-            highlight_fg: Color::Rgb(130, 245, 200), // #82f5c8 选中前景
-            status_bg: Color::Rgb(10, 16, 13),     // #0a100d 状态栏
-            status_fg: Color::Rgb(130, 135, 130),  // #828782 状态文字
-            preview: Color::Rgb(120, 125, 120),    // #787d78 预览
-            date: Color::Rgb(90, 95, 90),          // #5a5f5a 日期
-            error: Color::Rgb(230, 110, 110),      // #e66e6e 柔和红
-            warning: Color::Rgb(230, 190, 110),    // #e6be6e 柔和黄
-            success: Color::Rgb(110, 210, 160),    // #6ed2a0 柔和绿
-            shadow: Color::Rgb(4, 8, 6),           // #040806 阴影
-            gradient_start: Color::Rgb(80, 200, 150),
-            gradient_end: Color::Rgb(120, 240, 190),
+            bg: Color::Rgb(10, 10, 10),            // #0a0a0a 纯黑终端
+            bg_secondary: Color::Rgb(18, 18, 18),  // #121212 卡片
+            bg_tertiary: Color::Rgb(26, 26, 26),   // #1a1a1a 输入框
+            fg: Color::Rgb(0, 255, 0),             // #00ff00 荧光绿
+            fg_secondary: Color::Rgb(0, 180, 0),   // #00b400 暗绿
+            border: Color::Rgb(40, 60, 40),        // #283c28 暗绿边框
+            border_active: Color::Rgb(0, 255, 255), // #00ffff 青色
+            accent: Color::Rgb(0, 255, 0),         // #00ff00 荧光绿
+            accent_dim: Color::Rgb(0, 200, 0),     // #00c800 中绿
+            accent_subtle: Color::Rgb(0, 100, 0),  // #006400 暗绿
+            highlight_bg: Color::Rgb(0, 60, 0),    // #003c00 选中背景
+            highlight_fg: Color::Rgb(0, 255, 100), // #00ff64 亮绿
+            status_bg: Color::Rgb(12, 12, 12),     // #0c0c0c 状态栏
+            status_fg: Color::Rgb(128, 128, 128),  // #808080 状态文字
+            preview: Color::Rgb(120, 120, 120),    // #787878 预览
+            date: Color::Rgb(90, 90, 90),          // #5a5a5a 日期
+            error: Color::Rgb(255, 68, 68),        // #ff4444 终端红
+            warning: Color::Rgb(255, 230, 109),    // #ffe66d 终端黄
+            success: Color::Rgb(78, 205, 196),     // #4ecdc4 终端青
+            shadow: Color::Rgb(5, 5, 5),           // #050505 阴影
+            gradient_start: Color::Rgb(0, 255, 0),
+            gradient_end: Color::Rgb(0, 200, 200),
+            prompt: Color::Rgb(0, 255, 255),       // #00ffff 青色提示符
+            path: Color::Rgb(139, 195, 74),        // #8bc34a 路径绿
+            command: Color::Rgb(156, 39, 176),     // #9c27b0 命令紫
+            user: Color::Rgb(255, 107, 107),       // #ff6b6b 用户红
+            category: Color::Rgb(255, 152, 0),     // #ff9800 分类橙
         }
     }
 
@@ -336,6 +351,50 @@ impl Theme {
             .bg(self.accent_subtle)
             .fg(self.fg)
             .add_modifier(Modifier::BOLD)
+    }
+
+    // ========== 终端风格样式 ==========
+
+    /// 提示符样式
+    pub fn prompt_style(&self) -> Style {
+        Style::default()
+            .fg(self.prompt)
+            .add_modifier(Modifier::BOLD)
+    }
+
+    /// 路径样式
+    pub fn path_style(&self) -> Style {
+        Style::default().fg(self.path)
+    }
+
+    /// 命令样式
+    pub fn command_style(&self) -> Style {
+        Style::default().fg(self.command)
+    }
+
+    /// 用户样式
+    pub fn user_style(&self) -> Style {
+        Style::default().fg(self.user)
+    }
+
+    /// 分类样式
+    pub fn category_style(&self) -> Style {
+        Style::default().fg(self.category)
+    }
+
+    /// 终端输出错误样式
+    pub fn output_error_style(&self) -> Style {
+        Style::default().fg(self.error)
+    }
+
+    /// 终端输出信息样式
+    pub fn output_info_style(&self) -> Style {
+        Style::default().fg(self.warning)
+    }
+
+    /// 终端输出成功样式
+    pub fn output_success_style(&self) -> Style {
+        Style::default().fg(self.success)
     }
 
     // ========== 装饰样式 ==========
