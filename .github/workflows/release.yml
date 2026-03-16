@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Release - ${{ matrix.platform.os }}
+    runs-on: ${{ matrix.platform.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          # Windows
+          - { os: windows, runs_on: windows-latest, target: x86_64-pc-windows-msvc, ext: .exe }
+          # Linux
+          - { os: linux, runs_on: ubuntu-latest, target: x86_64-unknown-linux-gnu, ext: '' }
+          # macOS
+          - { os: macos, runs_on: macos-latest, target: x86_64-apple-darwin, ext: '' }
+          # macOS ARM
+          - { os: macos-arm, runs_on: macos-latest, target: aarch64-apple-darwin, ext: '' }
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-action@stable
+      with:
+        targets: ${{ matrix.platform.target }}
+
+    - name: Build Release
+      run: cargo build --release --target ${{ matrix.platform.target }}
+
+    - name: Package (Windows)
+      if: matrix.platform.os == 'windows'
+      run: |
+        $version = "${{ github.ref_name }}"
+        $name = "term-note-${version}-windows-x64"
+        New-Item -ItemType Directory -Force -Path "$name"
+        Copy-Item "target/${{ matrix.platform.target }}/release/term-note.exe" "$name/"
+        Copy-Item "README.md" "$name/"
+        Compress-Archive -Path "$name" -DestinationPath "$name.zip"
+        echo "ASSET=$name.zip" >> $env:GITHUB_ENV
+
+    - name: Package (Linux/macOS)
+      if: matrix.platform.os != 'windows'
+      run: |
+        VERSION="${{ github.ref_name }}"
+        NAME="term-note-${VERSION}-${{ matrix.platform.os }}"
+        mkdir "$NAME"
+        cp "target/${{ matrix.platform.target }}/release/term-note${{ matrix.platform.ext }}" "$NAME/"
+        cp README.md "$NAME/"
+        tar -czf "${NAME}.tar.gz" "$NAME"
+        echo "ASSET=${NAME}.tar.gz" >> $GITHUB_ENV
+
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ env.ASSET }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
