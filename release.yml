@@ -69,8 +69,8 @@ jobs:
         echo "ASSET=${NAME}.tar.gz" >> $GITHUB_ENV
 
     - name: Upload to Release
-      uses: softprops/action-gh-release@v1
+      uses: ncipollo/release-action@v1
       with:
-        files: ${{ env.ASSET }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        artifacts: "${{ env.ASSET }}"
+        token: ${{ secrets.GITHUB_TOKEN }}
