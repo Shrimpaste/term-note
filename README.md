@@ -154,4 +154,4 @@ MIT License
 
 ---
 
-由 [艾遥昕](https://github.com/Shrimpaste) 制作
+[Shrimpaste](https://github.com/Shrimpaste)
